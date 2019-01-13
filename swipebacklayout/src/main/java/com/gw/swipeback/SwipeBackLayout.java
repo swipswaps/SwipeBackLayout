@@ -14,6 +14,7 @@ import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,7 @@ public class SwipeBackLayout extends ViewGroup {
     private float autoFinishedVelocityLimit = 2000f;
 
     private int touchedEdge = ViewDragHelper.INVALID_POINTER;
+    private boolean disabled = false;
 
     public SwipeBackLayout(@NonNull Context context) {
         this(context, null);
@@ -325,6 +327,8 @@ public class SwipeBackLayout extends ViewGroup {
     }
 
     private boolean isSwipeEnabled() {
+        if( this.disabled)
+            return false;
         if (isSwipeFromEdge) {
             switch (mDirectionMode) {
                 case FROM_LEFT:
@@ -352,6 +356,10 @@ public class SwipeBackLayout extends ViewGroup {
                 return yvel < -autoFinishedVelocityLimit;
         }
         return false;
+    }
+
+    public void isDisabled(boolean disabled){
+        this.disabled = disabled;
     }
 
     public void setSwipeBackFactor(@FloatRange(from = 0.0f, to = 1.0f) float swipeBackFactor) {
